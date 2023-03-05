@@ -3,6 +3,7 @@ package executor
 import (
 	"fmt"
 	"os"
+	filepath "path/filepath"
 	"sync"
 
 	"github.com/Dreamacro/clash/adapter"
@@ -39,6 +40,8 @@ func readConfig(path string) ([]byte, error) {
 		return nil, fmt.Errorf("configuration file %s is empty", path)
 	}
 
+	log.Infoln("load config %s", path)
+
 	return data, err
 }
 
@@ -49,12 +52,20 @@ func Parse() (*config.Config, error) {
 
 // ParseWithPath parse config with custom config path
 func ParseWithPath(path string) (*config.Config, error) {
-	buf, err := readConfig(path)
+	main, err := readConfig(path)
 	if err != nil {
 		return nil, err
 	}
 
-	return ParseWithBytes(buf)
+	dir := filepath.Dir(path)
+
+	extend, err := readConfig(filepath.Join(dir, "extend.yaml"))
+	if err != nil {
+		extend = make([]byte, 0)
+	}
+
+	//return ParseWithBytes(buf)
+	return config.ParseConfig(main, extend)
 }
 
 // ParseWithBytes config with buffer

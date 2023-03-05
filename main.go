@@ -27,6 +27,7 @@ var (
 	externalUI         string
 	externalController string
 	secret             string
+	otherConfig        string
 )
 
 func init() {
@@ -37,6 +38,7 @@ func init() {
 	flag.StringVar(&secret, "secret", "", "override secret for RESTful API")
 	flag.BoolVar(&version, "v", false, "show current version of clash")
 	flag.BoolVar(&testConfig, "t", false, "test configuration and exit")
+	flag.StringVar(&otherConfig, "o", "", "other configuration file")
 	flag.Parse()
 
 	flagset = map[string]bool{}
