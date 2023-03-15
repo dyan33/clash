@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	filepath "path/filepath"
+	"strings"
 	"sync"
 
 	"github.com/Dreamacro/clash/adapter"
@@ -59,13 +60,30 @@ func ParseWithPath(path string) (*config.Config, error) {
 
 	dir := filepath.Dir(path)
 
-	extend, err := readConfig(filepath.Join(dir, "extend.yaml"))
+	//读取扩展配置
+	entries, err := os.ReadDir(dir)
+
 	if err != nil {
-		extend = make([]byte, 0)
+		return nil, err
+	}
+
+	extends := make([][]byte, 0)
+
+	for _, entry := range entries {
+
+		filename := entry.Name()
+
+		if !entry.IsDir() && strings.HasSuffix(filename, "extend.yaml") {
+			ext, err := readConfig(filepath.Join(dir, filename))
+			if err != nil {
+				return nil, err
+			}
+			extends = append(extends, ext)
+		}
 	}
 
 	//return ParseWithBytes(buf)
-	return config.ParseConfig(main, extend)
+	return config.ParseConfig(main, extends...)
 }
 
 // ParseWithBytes config with buffer
