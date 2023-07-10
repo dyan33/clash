@@ -23,14 +23,28 @@ func mergeRawConfig(main *RawConfig, extend *RawConfig) {
 		main.Proxy = append(main.Proxy, extend.Proxy...)
 	}
 
-	//合并代理组
-	if extend.ProxyGroup != nil {
-		main.ProxyGroup = append(main.ProxyGroup, extend.ProxyGroup...)
-	}
-
 	//合并规则
 	if extend.Rule != nil {
 		main.Rule = append(extend.Rule, main.Rule...)
+	}
+
+	//合并代理组
+	if extend.ProxyGroup != nil {
+
+		groupMap := make(map[string]map[string]any)
+
+		for _, group := range main.ProxyGroup {
+			name := group["name"].(string)
+			groupMap[name] = group
+		}
+
+		for _, group := range extend.ProxyGroup {
+			name := group["name"].(string)
+
+			if groupMap[name] == nil {
+				main.ProxyGroup = append(main.ProxyGroup, group)
+			}
+		}
 	}
 
 }

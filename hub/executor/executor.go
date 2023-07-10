@@ -69,11 +69,12 @@ func ParseWithPath(path string) (*config.Config, error) {
 
 	extends := make([][]byte, 0)
 
+	//读取所有配置
 	for _, entry := range entries {
 
 		filename := entry.Name()
 
-		if !entry.IsDir() && strings.HasSuffix(filename, "extend.yaml") {
+		if !entry.IsDir() && strings.HasSuffix(filename, "ext.yaml") {
 			ext, err := readConfig(filepath.Join(dir, filename))
 			if err != nil {
 				return nil, err

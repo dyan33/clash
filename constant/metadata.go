@@ -72,7 +72,7 @@ type Metadata struct {
 	Host         string  `json:"host"`
 	DNSMode      DNSMode `json:"dnsMode"`
 	ProcessPath  string  `json:"processPath"`
-	SpecialProxy string  `json:"specialProxy"`
+	SpecialProxy string  `json:"specialProxy"` //tunnel 代理
 
 	OriginDst netip.AddrPort `json:"-"`
 }

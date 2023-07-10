@@ -1,6 +1,6 @@
 
 install_clash:
-	go install .
+	go install -a  .
 
 
 build_windows:
@@ -8,6 +8,13 @@ build_windows:
     	export GOOS=windows;\
     	export GOARCH=amd64;\
     	go  build  -ldflags '-w -s' .;\
+
+
+build_linux:
+			export CGO_ENABLED=0;\
+        	export GOOS=linux;\
+        	export GOARCH=amd64;\
+        	go  build  -ldflags '-w -s' -o clash_linux .;\
 
 # openapi 规则
 install_openapi_extend:

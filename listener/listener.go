@@ -320,6 +320,7 @@ func PatchTunnel(tunnels []config.Tunnel, tcpIn chan<- C.ConnContext, udpIn chan
 		proxy   string
 	}
 
+	//已存在的tcp隧道连接
 	tcpOld := lo.Map(
 		lo.Keys(tunnelTCPListeners),
 		func(key string, _ int) addrProxy {
@@ -332,6 +333,7 @@ func PatchTunnel(tunnels []config.Tunnel, tcpIn chan<- C.ConnContext, udpIn chan
 			}
 		},
 	)
+	//已存在的udp隧道连接
 	udpOld := lo.Map(
 		lo.Keys(tunnelUDPListeners),
 		func(key string, _ int) addrProxy {
